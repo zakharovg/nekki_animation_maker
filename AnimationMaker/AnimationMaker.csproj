@@ -69,13 +69,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModel\AnimationViewModel.cs" />
     <Compile Include="ViewModel\EditMode.cs" />
     <Compile Include="ViewModel\IAnimationViewModel.cs" />
     <Compile Include="ViewModel\IEdgeViewModel.cs" />
     <Compile Include="ViewModel\IFigureViewModel.cs" />
     <Compile Include="ViewModel\IFrameViewModel.cs" />
     <Compile Include="ViewModel\IPointViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

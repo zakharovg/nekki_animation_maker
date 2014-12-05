@@ -1,8 +1,9 @@
 ﻿<Window x:Class="AnimationMaker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="MainWindow" Height="350" Width="525">
+        DataContext="{Binding Main, Source={StaticResource Locator}}"
+        Title="MainWindow">
     <Grid>
-        
+        <TextBlock Text="{Binding Mode}" />
     </Grid>
 </Window>
