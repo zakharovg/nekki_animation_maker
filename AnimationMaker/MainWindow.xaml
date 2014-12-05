@@ -4,6 +4,14 @@
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow">
     <Grid>
-        <TextBlock Text="{Binding Mode}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="15*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        
+        <Rectangle Fill="Red" Grid.Row="0"/>
+        <Rectangle Fill="Green" Grid.Row="1"/>
+        <Rectangle Fill="Blue" Grid.Row="2"/>
     </Grid>
 </Window>
