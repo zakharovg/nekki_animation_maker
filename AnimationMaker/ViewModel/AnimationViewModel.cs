@@ -31,12 +31,6 @@ namespace AnimationMaker.ViewModel
 			get { return _currentFrame; }
 		}
 
-		public EditMode Mode
-		{
-			get { return _mode; }
-			set { Set(ref _mode, value); }
-		}
-
 		public ICommand NextFrame
 		{
 			get { return _nextFrame; }

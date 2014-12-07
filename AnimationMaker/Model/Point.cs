@@ -4,11 +4,11 @@ namespace AnimationMaker.Model
 {
 	public struct Point : IEquatable<Point>
 	{
-		private readonly float _x;
+		private readonly double _x;
 
-		private readonly float _y;
+		private readonly double _y;
 
-		public Point(float x, float y)
+		public Point(double x, double y)
 		{
 			if (x < 0) throw new ArgumentException("Should not be less than zero", "x");
 			if (y < 0) throw new ArgumentException("Should not be less than zero", "y");
@@ -17,12 +17,12 @@ namespace AnimationMaker.Model
 			_y = y;
 		}
 
-		public float X
+		public double X
 		{
 			get { return _x; }
 		}
 
-		public float Y
+		public double Y
 		{
 			get { return _y; }
 		}

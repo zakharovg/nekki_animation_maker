@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModel="clr-namespace:AnimationMaker.ViewModel"
-                    xmlns:resources="clr-namespace:AnimationMaker.Resources">
+                    xmlns:resources="clr-namespace:AnimationMaker.Resources"
+                    xmlns:converters="clr-namespace:AnimationMaker.Resources.Converters">
 	<DataTemplate DataType="{x:Type viewModel:IPointViewModel}" x:Key="PointDataTemplate">
 		<Ellipse Canvas.Left="{Binding X}" Canvas.Right="{Binding Y}" Width="2" Height="2" />
 	</DataTemplate>
@@ -11,4 +12,5 @@
 	<resources:FiguresTemplateSelector x:Key="FiguresTemplateSelector"
 	                                   PointTemplate="{StaticResource PointDataTemplate}"
 	                                   EdgeTemplate="{StaticResource EdgeDataTemplate}" />
+	<converters:MouseLeftButtonUpToPointConverter x:Key="MouseLeftButtonUpToPointConverter"/>
 </ResourceDictionary>

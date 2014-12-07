@@ -72,7 +72,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Resources\EnumToBooleanConverter.cs" />
+    <Compile Include="Resources\Converters\MouseLeftButtonUpToPointConverter.cs" />
+    <Compile Include="Resources\Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Resources\FiguresTemplateSelector.cs" />
     <Compile Include="ViewModel\AnimationViewModel.cs" />
     <Compile Include="ViewModel\EditMode.cs" />
@@ -132,6 +133,10 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <Page Include="Resources\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Resource Include="Resources\Entypo.ttf" />
   </ItemGroup>
   <ItemGroup>

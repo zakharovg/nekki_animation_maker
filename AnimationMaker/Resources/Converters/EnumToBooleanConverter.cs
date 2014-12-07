@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace AnimationMaker.Resources
+namespace AnimationMaker.Resources.Converters
 {
 	public sealed class EnumToBooleanConverter : IValueConverter
 	{

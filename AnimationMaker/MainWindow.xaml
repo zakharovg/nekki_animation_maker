@@ -3,6 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModel="clr-namespace:AnimationMaker.ViewModel"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:commandWpf="clr-namespace:GalaSoft.MvvmLight.CommandWpf;assembly=GalaSoft.MvvmLight.Platform"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" MinHeight="1024" MinWidth="768" >
 	<Grid>
@@ -34,15 +37,15 @@
 				</Grid.RowDefinitions>
 
 				<ToggleButton Grid.Column="0" Grid.Row="1"
-			              IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.Select}}">
+			              IsChecked="{Binding Path=CurrentFrame.Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.Select}}">
 					<TextBlock FontSize="14" TextWrapping="Wrap">Select</TextBlock>
 				</ToggleButton>
 				<ToggleButton Grid.Column="2" Grid.Row="1"
-			              IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}">
+			              IsChecked="{Binding Path=CurrentFrame.Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}">
 					<TextBlock FontSize="14" TextWrapping="Wrap">Add point</TextBlock>
 				</ToggleButton>
 				<ToggleButton Grid.Column="4" Grid.Row="1"
-			              IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddEdge}}">
+			              IsChecked="{Binding Path=CurrentFrame.Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddEdge}}">
 					<TextBlock FontSize="14" TextWrapping="Wrap">Add edge</TextBlock>
 				</ToggleButton>
 
@@ -59,7 +62,15 @@
 				 ItemTemplateSelector="{StaticResource FiguresTemplateSelector}" >
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
-					<Canvas Background="LightGray"/>
+					<Canvas Background="LightGray">
+						<i:Interaction.Triggers>
+							<i:EventTrigger EventName="MouseLeftButtonUp">
+								<command:EventToCommand Command="{Binding CurrentFrame.AddPoint}"
+														EventArgsConverter="{StaticResource MouseLeftButtonUpToPointConverter}"
+														EventArgsConverterParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type IInputElement}}}"/>
+							</i:EventTrigger>
+						</i:Interaction.Triggers>
+					</Canvas>
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 		</ListBox>
