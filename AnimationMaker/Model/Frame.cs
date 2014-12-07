@@ -1,20 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace AnimationMaker.Model
 {
 	public sealed class Frame
 	{
-		private readonly HashSet<Point> _points;
-		private readonly HashSet<Edge> _edges;
+		private readonly ObservableCollection<Point> _points;
+		private readonly ObservableCollection<Edge> _edges;
 
 		public Frame()
 		{
-			_points = new HashSet<Point>();
-			_edges = new HashSet<Edge>();
+			_points = new ObservableCollection<Point>();
+			_edges = new ObservableCollection<Edge>();
 		}
 
-		public Frame(Frame source) : this()
+		public Frame(Frame source)
+			: this()
 		{
 			if (source == null) throw new ArgumentNullException("source");
 
@@ -25,12 +26,12 @@ namespace AnimationMaker.Model
 				_edges.Add(edge);
 		}
 
-		public IEnumerable<Point> Points
+		public ObservableCollection<Point> Points
 		{
 			get { return _points; }
 		}
 
-		public IEnumerable<Edge> Edges
+		public ObservableCollection<Edge> Edges
 		{
 			get { return _edges; }
 		}
@@ -38,11 +39,16 @@ namespace AnimationMaker.Model
 		public void AddEdge(Point start, Point end)
 		{
 			var edge = new Edge(start, end);
+			if (_edges.Contains(edge))
+				throw new ArgumentException("Edge with same points already exits");
 			_edges.Add(edge);
 		}
 
 		public void AddPoint(Point point)
 		{
+			if (_points.Contains(point))
+				throw new ArgumentException("Point with same coordinates already exits");
+
 			_points.Add(point);
 		}
 

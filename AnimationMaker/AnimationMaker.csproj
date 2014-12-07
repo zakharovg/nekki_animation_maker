@@ -83,6 +83,7 @@
     <Compile Include="ViewModel\IFigureViewModel.cs" />
     <Compile Include="ViewModel\IFrameViewModel.cs" />
     <Compile Include="ViewModel\IPointViewModel.cs" />
+    <Compile Include="ViewModel\PointViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

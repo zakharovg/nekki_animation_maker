@@ -1,8 +1,14 @@
-﻿namespace AnimationMaker.ViewModel
+﻿using AnimationMaker.Model;
+
+namespace AnimationMaker.ViewModel
 {
 	public interface IPointViewModel : IFigureViewModel
 	{
-		float X { get; }
-		float Y { get; }
+		Point Point { get; }
+
+		System.Windows.Point CenterPoint { get; }
+
+		double X { get; }
+		double Y { get; }
 	}
 }

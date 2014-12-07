@@ -3,8 +3,15 @@
                     xmlns:viewModel="clr-namespace:AnimationMaker.ViewModel"
                     xmlns:resources="clr-namespace:AnimationMaker.Resources"
                     xmlns:converters="clr-namespace:AnimationMaker.Resources.Converters">
-	<DataTemplate DataType="{x:Type viewModel:IPointViewModel}" x:Key="PointDataTemplate">
-		<Ellipse Canvas.Left="{Binding X}" Canvas.Right="{Binding Y}" Width="2" Height="2" />
+	<DataTemplate DataType="{x:Type viewModel:PointViewModel}" x:Key="PointDataTemplate">
+		<Path Stroke="Black" StrokeThickness="1" Fill="Black">
+			<Path.Data>
+				<EllipseGeometry
+					Center="{Binding Path=CenterPoint}"
+					RadiusX="5"
+					RadiusY="5" />
+			</Path.Data>
+		</Path>
 	</DataTemplate>
 	<DataTemplate DataType="{x:Type viewModel:IEdgeViewModel}" x:Key="EdgeDataTemplate">
 		<Line X1="{Binding Start.X}" X2="{Binding End.X}" Y1="{Binding Start.Y}" Y2="{Binding End.Y}" StrokeThickness="2" />
@@ -12,5 +19,5 @@
 	<resources:FiguresTemplateSelector x:Key="FiguresTemplateSelector"
 	                                   PointTemplate="{StaticResource PointDataTemplate}"
 	                                   EdgeTemplate="{StaticResource EdgeDataTemplate}" />
-	<converters:MouseLeftButtonUpToPointConverter x:Key="MouseLeftButtonUpToPointConverter"/>
+	<converters:MouseLeftButtonUpToPointConverter x:Key="MouseLeftButtonUpToPointConverter" />
 </ResourceDictionary>
