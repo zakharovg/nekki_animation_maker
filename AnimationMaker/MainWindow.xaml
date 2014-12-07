@@ -1,12 +1,13 @@
-﻿<Window x:Class="AnimationMaker.MainWindow"
+﻿<controls:MetroWindow x:Class="AnimationMaker.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModel="clr-namespace:AnimationMaker.ViewModel"
+        xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
-        Title="MainWindow">
+        Title="MainWindow" MinHeight="1024" MinWidth="768" >
 	<Grid>
 		<Grid.RowDefinitions>
-			<RowDefinition Height="2*" />
+			<RowDefinition Height="3*" />
 			<RowDefinition Height="15*" />
 			<RowDefinition Height="3*" />
 		</Grid.RowDefinitions>
@@ -16,49 +17,43 @@
 			<ColumnDefinition Width="2*" />
 		</Grid.ColumnDefinitions>
 
-		<!--<ListBox Grid.Column="1" Grid.Row="0">
-			<ListBox.Style>
-				<Style TargetType="{x:Type ListBox}">
-					<Setter Property="ItemTemplate">
-						<Setter.Value>
-							<DataTemplate>
-								<ToggleButton Content="{Binding}"
-								              IsChecked="{Binding IsSelected, Mode=TwoWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListBoxItem}}}" />
-							</DataTemplate>
-						</Setter.Value>
-					</Setter>
-				</Style>
-			</ListBox.Style>
-		</ListBox>-->
-		<Grid Grid.Row="0" Grid.Column="1">
-			<Grid.ColumnDefinitions>
-				<ColumnDefinition Width="15*"/>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="15*"/>
-				<ColumnDefinition Width="*"/>
-				<ColumnDefinition Width="15*"/>
-				<ColumnDefinition Width="100*"/>
-			</Grid.ColumnDefinitions>
-			<Grid.RowDefinitions>
-				<RowDefinition Height="2"/>
-				<RowDefinition Height="*"/>
-				<RowDefinition Height="2"/>
-			</Grid.RowDefinitions>
+		<Border Grid.Row="0" Grid.Column="1">
+			<Grid >
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="15*" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="15*" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="15*" />
+					<ColumnDefinition Width="100*" />
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="2*" />
+					<RowDefinition Height="7*" />
+					<RowDefinition Height="2*" />
+				</Grid.RowDefinitions>
 
-			<ToggleButton Grid.Column="0" Grid.Row="1" 
-						  IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.Select}}">
-				Select
-			</ToggleButton>
-			<ToggleButton Grid.Column="2" Grid.Row="1"
-						  IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}">
-				Add point
-			</ToggleButton>
-			<ToggleButton Grid.Column="4" Grid.Row="1"
-						  IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddEdge}}">
-				Add edge
-			</ToggleButton>
-		</Grid>
+				<ToggleButton Grid.Column="0" Grid.Row="1"
+			              IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.Select}}">
+					<TextBlock FontSize="14" TextWrapping="Wrap">Select</TextBlock>
+				</ToggleButton>
+				<ToggleButton Grid.Column="2" Grid.Row="1"
+			              IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}">
+					<TextBlock FontSize="14" TextWrapping="Wrap">Add point</TextBlock>
+				</ToggleButton>
+				<ToggleButton Grid.Column="4" Grid.Row="1"
+			              IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddEdge}}">
+					<TextBlock FontSize="14" TextWrapping="Wrap">Add edge</TextBlock>
+				</ToggleButton>
 
+				<TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding CurrentFrameIndex}" 
+					   FontSize="18"
+					   VerticalAlignment="Center"
+					   TextAlignment="Right"
+					   Margin="0,0,5,0"/>
+			</Grid>
+		</Border>
+		
 		<ListBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding CurrentFrame.Figures}" />
 	</Grid>
-</Window>
+</controls:MetroWindow>

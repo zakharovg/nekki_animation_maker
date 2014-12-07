@@ -13,6 +13,7 @@
 */
 
 using GalaSoft.MvvmLight.Ioc;
+using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
 
 namespace AnimationMaker.ViewModel
@@ -30,6 +31,7 @@ namespace AnimationMaker.ViewModel
         {
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
+			SimpleIoc.Default.Register<IMessenger, Messenger>();
 	        SimpleIoc.Default.Register<IAnimationViewModel, AnimationViewModel>();
         }
 

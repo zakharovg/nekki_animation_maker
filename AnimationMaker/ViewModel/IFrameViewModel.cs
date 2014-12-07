@@ -6,7 +6,7 @@ namespace AnimationMaker.ViewModel
 {
 	public interface IFrameViewModel
 	{
-		Frame Current { get; }
+		Frame Frame { get; }
 
 		ObservableCollection<IFigureViewModel> SelectedItems { get; }
 		ObservableCollection<IFigureViewModel> Figures { get; }

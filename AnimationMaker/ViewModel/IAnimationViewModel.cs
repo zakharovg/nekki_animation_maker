@@ -13,5 +13,6 @@ namespace AnimationMaker.ViewModel
 
 		ICommand Save { get; }
 		ICommand Load { get; }
+		string CurrentFrameIndex { get; }
 	}
 }
