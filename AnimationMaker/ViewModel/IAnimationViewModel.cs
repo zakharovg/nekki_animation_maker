@@ -6,7 +6,7 @@ namespace AnimationMaker.ViewModel
 	{
 		IFrameViewModel CurrentFrame { get; }
 
-		EditMode Mode { get; }
+		EditMode Mode { get; set; }
 
 		ICommand NextFrame { get; }
 		ICommand PreviousFrame { get; }

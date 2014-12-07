@@ -1,8 +1,9 @@
 ﻿using System.Windows.Input;
+using GalaSoft.MvvmLight;
 
 namespace AnimationMaker.ViewModel
 {
-	public sealed class AnimationViewModel : IAnimationViewModel
+	public sealed class AnimationViewModel : ViewModelBase, IAnimationViewModel
 	{
 		private IFrameViewModel _currentFrame;
 		private EditMode _mode;
@@ -19,6 +20,7 @@ namespace AnimationMaker.ViewModel
 		public EditMode Mode
 		{
 			get { return _mode; }
+			set { Set(ref _mode, value); }
 		}
 
 		public ICommand NextFrame

@@ -4,10 +4,12 @@
              StartupUri="MainWindow.xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              d1p1:Ignorable="d"
-             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006">
-    <Application.Resources>
-        <vm:ViewModelLocator x:Key="Locator"
-                             d:IsDataSource="True"
-                             xmlns:vm="clr-namespace:AnimationMaker.ViewModel" />
-    </Application.Resources>
+             xmlns:d1p1="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:resources="clr-namespace:AnimationMaker.Resources">
+	<Application.Resources>
+		<vm:ViewModelLocator x:Key="Locator"
+		                     d:IsDataSource="True"
+		                     xmlns:vm="clr-namespace:AnimationMaker.ViewModel" />
+		<resources:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
+	</Application.Resources>
 </Application>
