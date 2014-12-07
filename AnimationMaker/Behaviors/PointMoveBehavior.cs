@@ -8,9 +8,9 @@ using MahApps.Metro.Controls;
 
 namespace AnimationMaker.Behaviors
 {
-	public sealed class PointMoveBehavior : Behavior<FrameworkElement>
+	public sealed class PointMoveBehavior : SwitchBehavior<FrameworkElement>
 	{
-		private Point _currentPosition = new Point();
+		private Point _currentPosition;
 		private Point _mouseStartPosition;
 		private readonly TranslateTransform _transform = new TranslateTransform();
 		private Canvas _canvas;
@@ -22,7 +22,7 @@ namespace AnimationMaker.Behaviors
 			AssociatedObject.RenderTransform = _transform;
 
 			_canvas = AssociatedObject.TryFindParent<Canvas>();
-			
+
 			AssociatedObject.MouseLeftButtonDown += Capture;
 			AssociatedObject.MouseMove += Move;
 			AssociatedObject.MouseLeftButtonUp += Release;
@@ -30,6 +30,9 @@ namespace AnimationMaker.Behaviors
 
 		private void Capture(object sender, MouseButtonEventArgs args)
 		{
+			if (!IsEnabled)
+				return;
+
 			_mouseStartPosition = args.GetPosition(_canvas);
 			AssociatedObject.CaptureMouse();
 		}
@@ -38,6 +41,8 @@ namespace AnimationMaker.Behaviors
 		{
 			var diff = args.GetPosition(_canvas) - _mouseStartPosition;
 			if (!AssociatedObject.IsMouseCaptured)
+				return;
+			if (Mouse.LeftButton != MouseButtonState.Pressed)
 				return;
 
 			_transform.X = _currentPosition.X + diff.X;
@@ -51,7 +56,7 @@ namespace AnimationMaker.Behaviors
 		{
 			AssociatedObject.ReleaseMouseCapture();
 			_currentPosition.X = _transform.X;
-			_currentPosition.Y = _transform.Y; 
+			_currentPosition.Y = _transform.Y;
 		}
 
 		protected override void OnDetaching()

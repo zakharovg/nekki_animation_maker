@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace AnimationMaker.ViewModel
@@ -11,15 +12,22 @@ namespace AnimationMaker.ViewModel
 		private double _x;
 		private double _y;
 		private Point _centerPoint;
+		private bool _isSelected;
 
 		public PointViewModel(Model.Point point, IMessenger messenger)
 			: base(messenger)
 		{
 			_point = point;
 			SetCoordinates(_point.X, _point.Y);
+			TriggerSelection = new RelayCommand(() => IsSelected = !IsSelected);
 		}
 
-		public bool IsSelected { get; set; }
+		public bool IsSelected
+		{
+			get { return _isSelected; }
+			set { Set(ref _isSelected, value); }
+		}
+
 		public ICommand TriggerSelection { get; private set; }
 
 		public Model.Point Point

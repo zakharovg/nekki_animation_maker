@@ -4,9 +4,11 @@
                     xmlns:resources="clr-namespace:AnimationMaker.Resources"
                     xmlns:converters="clr-namespace:AnimationMaker.Resources.Converters"
                     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-                    xmlns:behaviors="clr-namespace:AnimationMaker.Behaviors">
+                    xmlns:behaviors="clr-namespace:AnimationMaker.Behaviors"
+                    xmlns:command="http://www.galasoft.ch/mvvmlight">
+	<converters:EnumToBooleanConverter x:Key="EnumToBooleanConverter" />
 	<DataTemplate DataType="{x:Type viewModel:PointViewModel}" x:Key="PointDataTemplate">
-		<Path Stroke="Black" StrokeThickness="1" Fill="Black" VerticalAlignment="Top" HorizontalAlignment="Left">
+		<Path x:Name="Path" Stroke="Black" StrokeThickness="1" VerticalAlignment="Top" HorizontalAlignment="Left">
 			<Path.Data>
 				<EllipseGeometry
 					Center="{Binding CenterPoint}"
@@ -14,9 +16,27 @@
 					RadiusY="5" />
 			</Path.Data>
 			<i:Interaction.Behaviors>
-				<behaviors:PointMoveBehavior />
+				<behaviors:PointMoveBehavior IsEnabled="{Binding 
+						RelativeSource={RelativeSource AncestorType={x:Type Window}}, 
+						Path=DataContext.CurrentFrame.Mode,
+						Converter={StaticResource EnumToBooleanConverter}, 
+						ConverterParameter={x:Static viewModel:EditMode.Select}}"/>
+				<behaviors:CommandClickBehavior Command="{Binding TriggerSelection}"
+												IsEnabled="{Binding 
+						RelativeSource={RelativeSource AncestorType={x:Type Window}}, 
+						Path=DataContext.CurrentFrame.Mode,
+						Converter={StaticResource EnumToBooleanConverter}, 
+						ConverterParameter={x:Static viewModel:EditMode.Select}}"/>
 			</i:Interaction.Behaviors>
 		</Path>
+		<DataTemplate.Triggers>
+			<DataTrigger Binding="{Binding IsSelected}" Value="True">
+				<Setter TargetName="Path" Property="Fill" Value="Red"/>
+			</DataTrigger>
+			<DataTrigger Binding="{Binding IsSelected}" Value="False">
+				<Setter TargetName="Path" Property="Fill" Value="Black"/>
+			</DataTrigger>
+		</DataTemplate.Triggers>
 	</DataTemplate>
 	<DataTemplate DataType="{x:Type viewModel:IEdgeViewModel}" x:Key="EdgeDataTemplate">
 		<Line X1="{Binding Start.X}" X2="{Binding End.X}" Y1="{Binding Start.Y}" Y2="{Binding End.Y}" StrokeThickness="2" />

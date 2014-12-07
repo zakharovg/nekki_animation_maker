@@ -5,6 +5,7 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
+        xmlns:behaviors="clr-namespace:AnimationMaker.Behaviors"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" MinHeight="1024" MinWidth="768" >
 	<Grid>
@@ -62,14 +63,10 @@
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
 					<Canvas Background="LightGray">
-						<i:Interaction.Triggers>
-							<i:EventTrigger EventName="MouseLeftButtonUp">
-								<command:EventToCommand Command="{Binding CurrentFrame.AddPoint}"
-														PassEventArgsToCommand="True"
-														EventArgsConverter="{StaticResource MouseLeftButtonUpToPointConverter}"
-														EventArgsConverterParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type IInputElement}}}"/>
-							</i:EventTrigger>
-						</i:Interaction.Triggers>
+						<i:Interaction.Behaviors>
+							<behaviors:CommandClickBehavior Command="{Binding CurrentFrame.AddPoint}" 
+															IsEnabled="{Binding CurrentFrame.Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}" />
+						</i:Interaction.Behaviors>
 					</Canvas>
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>

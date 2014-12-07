@@ -22,7 +22,7 @@ namespace AnimationMaker.ViewModel
 			if (frame == null) throw new ArgumentNullException("frame");
 			Frame = frame;
 
-			AddPoint = new RelayCommand<Point>(point => _frame.AddPoint(point), point => _mode == EditMode.AddPoint);
+			AddPoint = new RelayCommand<Point>(point => _frame.AddPoint(point));
 			_figures = new ObservableCollection<IFigureViewModel>();
 			_frame.Points.CollectionChanged += OnPointsOnCollectionChanged;
 		}
