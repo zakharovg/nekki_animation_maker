@@ -46,9 +46,6 @@ namespace AnimationMaker.Model
 
 		public void AddPoint(Point point)
 		{
-			if (_points.Contains(point))
-				throw new ArgumentException("Point with same coordinates already exits");
-
 			_points.Add(point);
 		}
 

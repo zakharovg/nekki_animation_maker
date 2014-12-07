@@ -72,6 +72,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\PointMoveBehavior.cs" />
+    <Compile Include="Extensions\UIElementExtensions.cs" />
     <Compile Include="Resources\Converters\MouseLeftButtonUpToPointConverter.cs" />
     <Compile Include="Resources\Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Resources\FiguresTemplateSelector.cs" />

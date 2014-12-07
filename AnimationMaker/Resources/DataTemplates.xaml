@@ -2,15 +2,20 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:viewModel="clr-namespace:AnimationMaker.ViewModel"
                     xmlns:resources="clr-namespace:AnimationMaker.Resources"
-                    xmlns:converters="clr-namespace:AnimationMaker.Resources.Converters">
+                    xmlns:converters="clr-namespace:AnimationMaker.Resources.Converters"
+                    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                    xmlns:behaviors="clr-namespace:AnimationMaker.Behaviors">
 	<DataTemplate DataType="{x:Type viewModel:PointViewModel}" x:Key="PointDataTemplate">
-		<Path Stroke="Black" StrokeThickness="1" Fill="Black">
+		<Path Stroke="Black" StrokeThickness="1" Fill="Black" VerticalAlignment="Top" HorizontalAlignment="Left">
 			<Path.Data>
 				<EllipseGeometry
-					Center="{Binding Path=CenterPoint}"
+					Center="{Binding CenterPoint}"
 					RadiusX="5"
 					RadiusY="5" />
 			</Path.Data>
+			<i:Interaction.Behaviors>
+				<behaviors:PointMoveBehavior />
+			</i:Interaction.Behaviors>
 		</Path>
 	</DataTemplate>
 	<DataTemplate DataType="{x:Type viewModel:IEdgeViewModel}" x:Key="EdgeDataTemplate">

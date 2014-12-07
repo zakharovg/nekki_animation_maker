@@ -4,9 +4,8 @@ namespace AnimationMaker.Model
 {
 	public struct Point : IEquatable<Point>
 	{
-		private readonly double _x;
-
-		private readonly double _y;
+		private double _x;
+		private double _y;
 
 		public Point(double x, double y)
 		{
@@ -20,11 +19,13 @@ namespace AnimationMaker.Model
 		public double X
 		{
 			get { return _x; }
+			set { _x = value; }
 		}
 
 		public double Y
 		{
 			get { return _y; }
+			set { _y = value; }
 		}
 
 		public bool Equals(Point other)

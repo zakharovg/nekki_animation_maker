@@ -5,7 +5,6 @@
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
-        xmlns:commandWpf="clr-namespace:GalaSoft.MvvmLight.CommandWpf;assembly=GalaSoft.MvvmLight.Platform"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" MinHeight="1024" MinWidth="768" >
 	<Grid>
@@ -74,12 +73,6 @@
 					</Canvas>
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
-			<ItemsControl.ItemContainerStyle>
-				<Style>
-					<Setter Property="Canvas.Left" Value="{Binding X}"/>
-					<Setter Property="Canvas.Top" Value="{Binding Y}"/>
-				</Style>
-			</ItemsControl.ItemContainerStyle>
 		</ItemsControl>
 	</Grid>
 </controls:MetroWindow>

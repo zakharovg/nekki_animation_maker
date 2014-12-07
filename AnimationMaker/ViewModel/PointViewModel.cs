@@ -7,12 +7,16 @@ namespace AnimationMaker.ViewModel
 {
 	public sealed class PointViewModel : ViewModelBase, IPointViewModel
 	{
-		private readonly Model.Point _point;
+		private Model.Point _point;
+		private double _x;
+		private double _y;
+		private Point _centerPoint;
 
 		public PointViewModel(Model.Point point, IMessenger messenger)
 			: base(messenger)
 		{
 			_point = point;
+			SetCoordinates(_point.X, _point.Y);
 		}
 
 		public bool IsSelected { get; set; }
@@ -25,17 +29,14 @@ namespace AnimationMaker.ViewModel
 
 		public Point CenterPoint
 		{
-			get { return new Point(_point.X, _point.Y); }
+			get { return _centerPoint; }
 		}
 
-		public double X
+		public void SetCoordinates(double x, double y)
 		{
-			get { return _point.X; }
-		}
-
-		public double Y
-		{
-			get { return _point.Y; }
+			_centerPoint.X = _point.X;
+			_centerPoint.Y = _point.Y;
+			RaisePropertyChanged("CenterPoint");
 		}
 	}
 }
