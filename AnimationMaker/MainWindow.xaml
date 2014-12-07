@@ -8,6 +8,9 @@
         xmlns:behaviors="clr-namespace:AnimationMaker.Behaviors"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" MinHeight="1024" MinWidth="768" >
+	<Window.InputBindings>
+		<KeyBinding Key="Delete" Command="{Binding CurrentFrame.RemoveSelected}"/>
+	</Window.InputBindings>
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="3*" />
@@ -62,7 +65,7 @@
 				 ItemTemplateSelector="{StaticResource FiguresTemplateSelector}" >
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
-					<Canvas Background="LightGray">
+					<Canvas Background="LightGray" Focusable="True">
 						<i:Interaction.Behaviors>
 							<behaviors:CommandClickBehavior Command="{Binding CurrentFrame.AddPoint}" 
 															IsEnabled="{Binding CurrentFrame.Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}" />

@@ -23,7 +23,7 @@ namespace AnimationMaker.ViewModel
 			_currentFrameIndex = 0;
 
 			var initialFrame = _animation[_currentFrameIndex];
-			_currentFrame = new FrameViewModel(initialFrame, MessengerInstance);
+			_currentFrame = new FrameViewModel(initialFrame, new object(), MessengerInstance);
 		}
 
 		public IFrameViewModel CurrentFrame

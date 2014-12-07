@@ -8,7 +8,6 @@ namespace AnimationMaker.ViewModel
 	{
 		Frame Frame { get; }
 
-		ObservableCollection<IFigureViewModel> SelectedItems { get; }
 		ObservableCollection<IFigureViewModel> Figures { get; }
 
 		EditMode Mode { get; set; }

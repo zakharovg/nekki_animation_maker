@@ -76,6 +76,7 @@
     <Compile Include="Behaviors\PointMoveBehavior.cs" />
     <Compile Include="Behaviors\SwitchBehavior.cs" />
     <Compile Include="Extensions\UIElementExtensions.cs" />
+    <Compile Include="Messages\FigureSelectionMessage.cs" />
     <Compile Include="Resources\Converters\MouseLeftButtonUpToPointConverter.cs" />
     <Compile Include="Resources\Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Resources\FiguresTemplateSelector.cs" />

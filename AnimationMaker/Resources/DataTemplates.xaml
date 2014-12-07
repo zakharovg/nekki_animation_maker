@@ -28,6 +28,11 @@
 						Converter={StaticResource EnumToBooleanConverter}, 
 						ConverterParameter={x:Static viewModel:EditMode.Select}}"/>
 			</i:Interaction.Behaviors>
+			<i:Interaction.Triggers>
+				<i:EventTrigger EventName="KeyUp">
+					
+				</i:EventTrigger>
+			</i:Interaction.Triggers>
 		</Path>
 		<DataTemplate.Triggers>
 			<DataTrigger Binding="{Binding IsSelected}" Value="True">
