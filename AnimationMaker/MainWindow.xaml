@@ -53,7 +53,15 @@
 					   Margin="0,0,5,0"/>
 			</Grid>
 		</Border>
-		
-		<ListBox Grid.Column="1" Grid.Row="1" ItemsSource="{Binding CurrentFrame.Figures}" />
+
+		<ListBox Grid.Column="1" Grid.Row="1" 
+				 ItemsSource="{Binding CurrentFrame.Figures}" 
+				 ItemTemplateSelector="{StaticResource FiguresTemplateSelector}" >
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<Canvas Background="LightGray"/>
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+		</ListBox>
 	</Grid>
 </controls:MetroWindow>
