@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AnimationMaker.Model;
 using GalaSoft.MvvmLight.Messaging;
@@ -23,14 +24,21 @@ namespace AnimationMaker.ViewModel
 			if (frame == null) throw new ArgumentNullException("frame");
 			var token = new object();
 
-			var edges = frame.Edges.Select(e => _figureFactory.CreateEdge(e, token)).ToList();
-			var notConnectedPoints = frame.GetNotConnectedPoints().Select(p => _figureFactory.CreatePoint(p, token));
-			var points = edges
-				.SelectMany(e => e.Points)
-				.Concat(notConnectedPoints);
+			var points = frame.Points.Select(p => _figureFactory.CreatePoint(p, token)).ToList();
+			var edges = CreateEdges(frame.Edges, points, token);
 			var figures = edges.Concat<IFigureViewModel>(points);
 
 			return new FrameViewModel(_figureFactory, _messenger, figures, token);
+		}
+
+		private IEnumerable<IEdgeViewModel> CreateEdges(IEnumerable<Edge> edges, List<IPointViewModel> points, object token)
+		{
+			foreach (var edge in edges)
+			{
+				var startPoint = points.First(p => p.Point.Equals(edge.Start));
+				var endPoint = points.First(p => p.Point.Equals(edge.End));
+				yield return _figureFactory.CreateEdge(startPoint, endPoint, token);
+			}
 		}
 	}
 }
