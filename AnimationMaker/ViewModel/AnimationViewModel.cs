@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using AnimationMaker.Model;
+using AnimationMaker.Model.Serialization;
 using AnimationMaker.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
@@ -105,7 +106,8 @@ namespace AnimationMaker.ViewModel
 					using (var file = File.OpenRead(result.Filename))
 						_animation = _animationSerializer.Read(file);
 
-					RaisePropertyChanged("CurrentFrame");
+					CurrentFrame = _frameFactory.Create(_animation.Frames.First());
+					CurrentFrameIndex = 0;
 				}
 				catch (Exception exception)
 				{

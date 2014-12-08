@@ -28,7 +28,7 @@ namespace AnimationMaker.Services
 
 		public OpenDialogResult GetLoadPath()
 		{
-			var dialog = new OpenFileDialog()
+			var dialog = new OpenFileDialog
 			{
 				DefaultExt = DefaultExtension,
 				Filter = DialogFilter

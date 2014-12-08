@@ -8,6 +8,15 @@ namespace AnimationMaker.Model
 	{
 		private readonly List<Frame> _frames;
 
+		public Animation(IEnumerable<Frame> frames)
+		{
+			if (frames == null) throw new ArgumentNullException("frames");
+			var framesList = frames.ToList();
+			if (framesList.Contains(null)) throw new ArgumentException("Should not contain null", "frames");
+
+			_frames = framesList;
+		}
+
 		public Animation()
 		{
 			var defaultFrame = new Frame();
@@ -38,7 +47,7 @@ namespace AnimationMaker.Model
 			get { return _frames[index]; }
 			set
 			{
-				if(value == null) throw new ArgumentNullException("value");
+				if (value == null) throw new ArgumentNullException("value");
 				_frames[index] = value;
 			}
 		}

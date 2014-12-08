@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace AnimationMaker.Model
+namespace AnimationMaker.Model.Serialization
 {
 	public interface IAnimationSerializer
 	{

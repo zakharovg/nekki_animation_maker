@@ -13,6 +13,7 @@
 */
 
 using AnimationMaker.Model;
+using AnimationMaker.Model.Serialization;
 using AnimationMaker.Services;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
