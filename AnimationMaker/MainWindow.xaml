@@ -16,7 +16,9 @@
 		<KeyBinding Key="Right" Command="{Binding NextFrame}"/>
 		<KeyBinding Key="S" Modifiers="Control" Command="{Binding Save}"/>
 		<KeyBinding Key="O" Modifiers="Control" Command="{Binding Load}"/>
-		<KeyBinding Key="R" Modifiers="Control" Command="{Binding Clear}"/>
+		<KeyBinding Key="R" Modifiers="Control" Command="{Binding ClearAnimation}"/>
+		<KeyBinding Key="C" Modifiers="Control" Command="{Binding ClearFrame}"/>
+		<KeyBinding Key="D" Modifiers="Control" Command="{Binding Delete}"/>
 	</Window.InputBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -38,7 +40,12 @@
 					<ColumnDefinition Width="15*" />
 					<ColumnDefinition Width="*" />
 					<ColumnDefinition Width="15*" />
-					<ColumnDefinition Width="100*" />
+					<ColumnDefinition Width="50*" />
+					<ColumnDefinition Width="15*" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="15*" />
+					<ColumnDefinition Width="*" />
+					<ColumnDefinition Width="50*" />
 				</Grid.ColumnDefinitions>
 				<Grid.RowDefinitions>
 					<RowDefinition Height="2*" />
@@ -59,7 +66,20 @@
 					<TextBlock FontSize="14" TextWrapping="Wrap">Add edge</TextBlock>
 				</ToggleButton>
 
-				<TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding StatusText}" 
+				<Button Grid.Column="6" Grid.Row="1" Command="{Binding ClearFrame}">
+					<Button.ToolTip>
+						<TextBlock FontSize="14">Hotkey: Ctrl + C</TextBlock>
+					</Button.ToolTip>
+					<TextBlock FontSize="14" TextWrapping="Wrap">Clear frame</TextBlock>
+				</Button>
+				<Button Grid.Column="8" Grid.Row="1" Command="{Binding Delete}" IsEnabled="{Binding CanDeleteFrame}">
+					<Button.ToolTip>
+						<TextBlock FontSize="14">Hotkey: Ctrl + D</TextBlock>
+					</Button.ToolTip>
+					<TextBlock FontSize="14" TextWrapping="Wrap">Delete frame</TextBlock>
+				</Button>
+
+				<TextBlock Grid.Row="1" Grid.Column="10" Text="{Binding StatusText}" 
 					   FontSize="18"
 					   VerticalAlignment="Center"
 					   TextAlignment="Right"
@@ -127,7 +147,7 @@
 				</Button.ToolTip>
 				<TextBlock Text="Load" TextWrapping="Wrap" FontSize="14" TextAlignment="Center"/>
 			</Button>
-			<Button Grid.Row="1" Grid.Column="8" Command="{Binding Clear}">
+			<Button Grid.Row="1" Grid.Column="8" Command="{Binding ClearAnimation}">
 				<Button.ToolTip>
 					<TextBlock Text="Hotkey: Ctrl + R"/>
 				</Button.ToolTip>

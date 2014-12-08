@@ -24,7 +24,9 @@ namespace AnimationMaker.ViewModel
 		private ICommand _previousFrame;
 		private ICommand _save;
 		private ICommand _load;
-		private ICommand _clear;
+		private ICommand _clearAnimation;
+		private ICommand _clearFrame;
+		private ICommand _delete;
 
 		private IFrameViewModel _currentFrame;
 
@@ -128,7 +130,17 @@ namespace AnimationMaker.ViewModel
 				if (ex != null)
 					await _userDialogService.Alert(ex.Message);
 			});
-			_clear = new RelayCommand(Reset);
+			_clearAnimation = new RelayCommand(Reset);
+			_clearFrame = new RelayCommand(() => CurrentFrame.Figures.Clear());
+			_delete = new RelayCommand(() =>
+			{
+				var frameIndex = CurrentFrameIndex;
+				var newFrameIndex = frameIndex == 0 ? 0 : frameIndex - 1;
+				_animation.Remove(frameIndex);
+
+				CurrentFrameIndex = newFrameIndex;
+				CurrentFrame = _frameFactory.Create(_animation[CurrentFrameIndex]);
+			}, () => CanDeleteFrame);
 		}
 
 		private void SaveCurrentFrame()
@@ -145,6 +157,7 @@ namespace AnimationMaker.ViewModel
 				Set(ref _currentFrame, value);
 				RaisePropertyChanged("StatusText");
 				RaisePropertyChanged("CanNavigateLeft");
+				RaisePropertyChanged("CanDeleteFrame");
 			}
 		}
 
@@ -174,9 +187,19 @@ namespace AnimationMaker.ViewModel
 			get { return _load; }
 		}
 
-		public ICommand Clear
+		public ICommand ClearAnimation
 		{
-			get { return _clear; }
+			get { return _clearAnimation; }
+		}
+
+		public ICommand ClearFrame
+		{
+			get { return _clearFrame; }
+		}
+
+		public ICommand Delete
+		{
+			get { return _delete; }
 		}
 
 		public string StatusText
@@ -187,6 +210,11 @@ namespace AnimationMaker.ViewModel
 		public bool CanNavigateLeft
 		{
 			get { return CurrentFrameIndex > 0; }
+		}
+
+		public bool CanDeleteFrame
+		{
+			get { return _animation.Frames.Count() > 1; }
 		}
 
 		private int CurrentFrameIndex { get; set; }

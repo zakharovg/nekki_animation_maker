@@ -14,9 +14,12 @@ namespace AnimationMaker.ViewModel
 		ICommand Save { get; }
 		ICommand Load { get; }
 
-		ICommand Clear { get; }
+		ICommand ClearAnimation { get; }
+		ICommand ClearFrame { get; }
+		ICommand Delete { get; }
 
 		string StatusText { get; }
 		bool CanNavigateLeft { get; }
+		bool CanDeleteFrame { get; }
 	}
 }
