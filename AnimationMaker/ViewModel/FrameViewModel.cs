@@ -70,8 +70,17 @@ namespace AnimationMaker.ViewModel
 
 		private void RemoveSelectedFigures()
 		{
-			foreach (var figure in _selectedItems)
-				_figures.Remove(figure);
+			var edges = _figures.OfType<IEdgeViewModel>().ToList();
+			foreach (var point in _selectedItems.OfType<IPointViewModel>())
+			{
+				_figures.Remove(point);
+				var containingEdge = edges.FirstOrDefault(e => e.Start.Point.Equals(point.Point) || e.End.Point.Equals(point.Point));
+				if (containingEdge != null)
+					_figures.Remove(containingEdge);
+			}
+
+			foreach (var edge in _selectedItems.OfType<IEdgeViewModel>())
+				_figures.Remove(edge);
 		}
 
 		public ICommand RemoveSelected { get; private set; }

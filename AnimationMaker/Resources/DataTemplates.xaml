@@ -11,8 +11,8 @@
 			<Path.Data>
 				<EllipseGeometry
 					Center="{Binding CenterPoint}"
-					RadiusX="3"
-					RadiusY="3" />
+					RadiusX="4"
+					RadiusY="4" />
 			</Path.Data>
 			<i:Interaction.Behaviors>
 				<behaviors:PointMoveBehavior IsEnabled="{Binding 
@@ -45,7 +45,7 @@
 		</DataTemplate.Triggers>
 	</DataTemplate>
 	<DataTemplate DataType="{x:Type viewModel:EdgeViewModel}" x:Key="EdgeDataTemplate">
-		<Path x:Name="Line" Stroke="Black" StrokeThickness="2" VerticalAlignment="Top" HorizontalAlignment="Left" Canvas.ZIndex="1">
+		<Path x:Name="Line" Stroke="Black" StrokeThickness="4" VerticalAlignment="Top" HorizontalAlignment="Left" Canvas.ZIndex="1">
 			<Path.Data>
 				<LineGeometry StartPoint="{Binding Start.CenterPoint}" 
 							  EndPoint="{Binding End.CenterPoint}"/>
