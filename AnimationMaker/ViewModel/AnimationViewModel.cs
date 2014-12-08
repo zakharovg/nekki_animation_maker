@@ -1,34 +1,78 @@
-﻿using System.Windows.Input;
+﻿using System;
+using System.Linq;
+using System.Windows.Input;
 using AnimationMaker.Model;
 using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace AnimationMaker.ViewModel
 {
 	public sealed class AnimationViewModel : ViewModelBase, IAnimationViewModel
 	{
+		private readonly IFrameViewModelFactory _frameFactory;
 		private readonly Animation _animation;
-		private int _currentFrameIndex;
-		private IFrameViewModel _currentFrame;
-		private EditMode _mode;
+
 		private ICommand _nextFrame;
 		private ICommand _previousFrame;
 		private ICommand _save;
 		private ICommand _load;
 
-		public AnimationViewModel(IMessenger messenger)
+		private int _currentFrameIndex;
+		private IFrameViewModel _currentFrame;
+
+		public AnimationViewModel(IMessenger messenger, IFrameViewModelFactory frameFactory)
 			: base(messenger)
 		{
-			_animation = new Animation();
-			_currentFrameIndex = 0;
+			if (frameFactory == null) throw new ArgumentNullException("frameFactory");
 
-			var initialFrame = _animation[_currentFrameIndex];
-			_currentFrame = new FrameViewModel(initialFrame, new object(), MessengerInstance);
+			_frameFactory = frameFactory;
+			_animation = new Animation();
+			CurrentFrameIndex = 0;
+
+			SetupCommands();
+
+			var initialFrame = _animation[CurrentFrameIndex];
+			_currentFrame = _frameFactory.Create(initialFrame);
+		}
+
+		private void SetupCommands()
+		{
+			_nextFrame = new RelayCommand(() =>
+			{
+				SaveCurrentFrame();
+				++CurrentFrameIndex;
+
+				var nextFrame = _animation.Frames.Count() <= CurrentFrameIndex
+					? _animation.AddNew()
+					: _animation[CurrentFrameIndex];
+
+				CurrentFrame = _frameFactory.Create(nextFrame);
+			});
+			_previousFrame = new RelayCommand(() =>
+			{
+				if (CurrentFrameIndex == 0)
+					throw new InvalidOperationException("Current frame is first frame in animation");
+
+				SaveCurrentFrame();
+
+				var previousFrame = _animation[--CurrentFrameIndex];
+				CurrentFrame = _frameFactory.Create(previousFrame);
+			});
+			_save = new RelayCommand(() => { });
+			_load = new RelayCommand(() => { });
+		}
+
+		private void SaveCurrentFrame()
+		{
+			var currentFrame = CurrentFrame.GetFrame();
+			_animation[CurrentFrameIndex] = currentFrame;
 		}
 
 		public IFrameViewModel CurrentFrame
 		{
 			get { return _currentFrame; }
+			private set { Set(ref _currentFrame, value); }
 		}
 
 		public ICommand NextFrame
@@ -51,9 +95,25 @@ namespace AnimationMaker.ViewModel
 			get { return _load; }
 		}
 
-		public string CurrentFrameIndex
+		public string CurrentFrameText
 		{
-			get { return string.Format("Frame #{0}", _currentFrameIndex); }
+			get { return string.Format("Frame #{0}", CurrentFrameIndex); }
+		}
+
+		public bool CanNavigateLeft
+		{
+			get { return CurrentFrameIndex > 0; }
+		}
+
+		private int CurrentFrameIndex
+		{
+			get { return _currentFrameIndex; }
+			set
+			{
+				_currentFrameIndex = value;
+				RaisePropertyChanged("CurrentFrameText");
+				RaisePropertyChanged("CanNavigateLeft");
+			}
 		}
 	}
 }

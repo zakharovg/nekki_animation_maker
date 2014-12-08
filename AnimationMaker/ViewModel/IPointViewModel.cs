@@ -6,7 +6,7 @@ namespace AnimationMaker.ViewModel
 	{
 		Point Point { get; }
 
-		System.Windows.Point CenterPoint { get; }
-		void SetCoordinates(double x, double y);
+		System.Windows.Point CenterPoint { get; set; }
+		//void SetCoordinates(double x, double y);
 	}
 }

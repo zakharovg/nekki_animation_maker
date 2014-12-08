@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace AnimationMaker.Model
@@ -35,6 +36,11 @@ namespace AnimationMaker.Model
 		public Frame this[int index]
 		{
 			get { return _frames[index]; }
+			set
+			{
+				if(value == null) throw new ArgumentNullException("value");
+				_frames[index] = value;
+			}
 		}
 	}
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Linq;
 using System.Windows.Input;
 using AnimationMaker.Messages;
@@ -15,47 +14,26 @@ namespace AnimationMaker.ViewModel
 	public sealed class FrameViewModel : ViewModelBase, IFrameViewModel
 	{
 		private readonly object _token;
-		private Frame _frame;
+		private readonly IFigureViewModelFactory _figureFactory;
 		private EditMode _mode;
 
 		private readonly ObservableCollection<IFigureViewModel> _figures;
-		private readonly List<IFigureViewModel> _selectedItems;
+		private readonly List<IFigureViewModel> _selectedItems = new List<IFigureViewModel>();
 
-		public FrameViewModel(Frame frame, object token, IMessenger messenger)
+		public FrameViewModel(IFigureViewModelFactory figureFactory, IMessenger messenger, IEnumerable<IFigureViewModel> figures, object token)
 			: base(messenger)
 		{
-			if (frame == null) throw new ArgumentNullException("frame");
 			if (token == null) throw new ArgumentNullException("token");
-			_token = token;
-			Frame = frame;
+			if (figureFactory == null) throw new ArgumentNullException("figureFactory");
+			if (figures == null) throw new ArgumentNullException("figures");
 
-			AddPoint = new RelayCommand<Point>(point => _frame.AddPoint(point));
-			RemoveSelected = new RelayCommand(RemoveSelectedFigures);
-			_selectedItems = new List<IFigureViewModel>();
-			_figures = new ObservableCollection<IFigureViewModel>();
-			_frame.Points.CollectionChanged += OnPointsOnCollectionChanged;
+			SetupCommands();
+
+			_token = token;
+			_figureFactory = figureFactory;
+			_figures = new ObservableCollection<IFigureViewModel>(figures.ToList());
 
 			MessengerInstance.Register<FigureSelectionMessage>(this, _token, HandleItemSelection);
-		}
-
-		private void RemoveSelectedFigures()
-		{
-			foreach (var point in _selectedItems.OfType<IPointViewModel>())
-			{
-				_figures.Remove(point);
-				_frame.RemovePoint(point.Point);
-			}
-			foreach (var edge in _selectedItems.OfType<IEdgeViewModel>())
-			{
-				_figures.Remove(edge);
-				_frame.RemoveEdge(edge.Edge);
-			}
-		}
-
-		public Frame Frame
-		{
-			get { return _frame; }
-			private set { Set(ref _frame, value); }
 		}
 
 		public EditMode Mode
@@ -69,10 +47,6 @@ namespace AnimationMaker.ViewModel
 			get { return _figures; }
 		}
 
-		public ICommand RemoveSelected { get; private set; }
-		public ICommand AddPoint { get; private set; }
-		public ICommand AddEdge { get; private set; }
-
 		public void HandleItemSelection(FigureSelectionMessage message)
 		{
 			if (message.IsSelected)
@@ -81,50 +55,47 @@ namespace AnimationMaker.ViewModel
 				_selectedItems.Remove(message.Sender);
 		}
 
-		private void OnPointsOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
+		private void SetupCommands()
 		{
-			switch (notifyCollectionChangedEventArgs.Action)
+			AddPoint = new RelayCommand<Point>(point =>
 			{
-				case NotifyCollectionChangedAction.Add:
-					var point = notifyCollectionChangedEventArgs.NewItems.OfType<Point>().First();
-					var pointViewModel = new PointViewModel(point, _token, MessengerInstance);
-					_figures.Add(pointViewModel);
-					break;
-				case NotifyCollectionChangedAction.Remove:
-					var pointToRemove = notifyCollectionChangedEventArgs.OldItems.OfType<Point>().First();
-					var viewModelToRemove = _figures.OfType<IPointViewModel>().First(p => p.Point.Equals(pointToRemove));
-					_figures.Remove(viewModelToRemove);
-					break;
-				case NotifyCollectionChangedAction.Replace:
-					var pointToAdd = notifyCollectionChangedEventArgs.NewItems.OfType<Point>().First();
-					var pointToReplace = notifyCollectionChangedEventArgs.OldItems.OfType<Point>().First();
+				var viewModel = _figureFactory.CreatePoint(point, _token);
+				_figures.Add(viewModel);
+			});
+			AddEdge = new RelayCommand<Tuple<Point, Point>>(tuple =>
+			{
+				var points = _figures.OfType<IPointViewModel>().ToList();
+				var startPointViewModel = points.First(p => p.Point.Equals(tuple.Item1));
+				var endPointViewModel = points.First(p => p.Point.Equals(tuple.Item2));
+				var viewModel = _figureFactory.CreateEdge(startPointViewModel, endPointViewModel, _token);
 
-					Replace(pointToReplace, pointToAdd);
-					break;
-				case NotifyCollectionChangedAction.Move:
-					break;
-				case NotifyCollectionChangedAction.Reset:
-					break;
-				default:
-					throw new ArgumentOutOfRangeException();
-			}
+				_figures.Add(viewModel);
+			});
+			RemoveSelected = new RelayCommand(RemoveSelectedFigures);
 		}
 
-		private void Replace(Point pointToReplace, Point pointToAdd)
+		private void RemoveSelectedFigures()
 		{
-			var viewModelToReplace = _figures.OfType<IPointViewModel>().First(p => p.Point.Equals(pointToReplace));
-			var index = _figures.IndexOf(viewModelToReplace);
-			if (index < -1)
-				return;
+			foreach (var figure in _selectedItems)
+				_figures.Remove(figure);
+		}
 
-			_figures.Remove(viewModelToReplace);
-			_figures.Add(new PointViewModel(pointToAdd, _token, MessengerInstance));
+		public ICommand RemoveSelected { get; private set; }
+
+		public ICommand AddPoint { get; private set; }
+
+		public ICommand AddEdge { get; private set; }
+
+		public Frame GetFrame()
+		{
+			var points = _figures.OfType<IPointViewModel>().Select(f => f.Point).ToArray();
+			var edges = _figures.OfType<IEdgeViewModel>().Select(e => e.GetEdge()).ToArray();
+			return new Frame(points, edges);
 		}
 
 		public override void Cleanup()
 		{
 			base.Cleanup();
-			_frame.Edges.CollectionChanged -= OnPointsOnCollectionChanged;
 			MessengerInstance.Unregister<FigureSelectionMessage>(this);
 		}
 	}

@@ -6,8 +6,6 @@ namespace AnimationMaker.ViewModel
 {
 	public interface IFrameViewModel
 	{
-		Frame Frame { get; }
-
 		ObservableCollection<IFigureViewModel> Figures { get; }
 
 		EditMode Mode { get; set; }
@@ -15,5 +13,7 @@ namespace AnimationMaker.ViewModel
 		ICommand RemoveSelected { get; }
 		ICommand AddPoint { get; }
 		ICommand AddEdge { get; }
+
+		Frame GetFrame();
 	}
 }

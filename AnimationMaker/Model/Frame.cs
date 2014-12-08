@@ -1,17 +1,24 @@
 ﻿using System;
-using System.Collections.ObjectModel;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AnimationMaker.Model
 {
 	public sealed class Frame
 	{
-		private readonly ObservableCollection<Point> _points;
-		private readonly ObservableCollection<Edge> _edges;
+		private readonly List<Point> _points;
+		private readonly List<Edge> _edges;
 
-		public Frame()
+		public Frame() : this(Enumerable.Empty<Point>(), Enumerable.Empty<Edge>())
+		{ }
+
+		public Frame(IEnumerable<Point> points, IEnumerable<Edge> edges)
 		{
-			_points = new ObservableCollection<Point>();
-			_edges = new ObservableCollection<Edge>();
+			if (points == null) throw new ArgumentNullException("points");
+			if (edges == null) throw new ArgumentNullException("edges");
+
+			_points = points.ToList();
+			_edges = edges.ToList();
 		}
 
 		public Frame(Frame source)
@@ -26,19 +33,28 @@ namespace AnimationMaker.Model
 				_edges.Add(edge);
 		}
 
-		public ObservableCollection<Point> Points
+		public IEnumerable<Point> Points
 		{
 			get { return _points; }
 		}
 
-		public ObservableCollection<Edge> Edges
+		public IEnumerable<Edge> Edges
 		{
 			get { return _edges; }
 		}
 
-		public void AddEdge(Point start, Point end)
+		public IEnumerable<Point> GetPointsOfEdges()
 		{
-			var edge = new Edge(start, end);
+			return _edges.SelectMany(e => new List<Point> { e.Start, e.End });
+		}
+
+		public IEnumerable<Point> GetNotConnectedPoints()
+		{
+			return _points.Except(GetPointsOfEdges());
+		}
+
+		public void AddEdge(Edge edge)
+		{
 			if (_edges.Contains(edge))
 				throw new ArgumentException("Edge with same points already exits");
 			_edges.Add(edge);
@@ -57,6 +73,10 @@ namespace AnimationMaker.Model
 		public void RemovePoint(Point point)
 		{
 			_points.Remove(point);
+
+			var edgesToRemove = _edges.Where(e => e.End.Equals(point) || e.Start.Equals(point)).ToList();
+			foreach (var edge in edgesToRemove)
+				RemoveEdge(edge);
 		}
 	}
 }

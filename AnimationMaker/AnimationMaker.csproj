@@ -72,8 +72,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Behaviors\AddEdge\AddEdgeBehavior.cs" />
+    <Compile Include="Behaviors\AddEdge\AddEdgeBehaviorState.cs" />
+    <Compile Include="Behaviors\AddEdge\FirstPointAddEdgeBehaviorState.cs" />
+    <Compile Include="Behaviors\AddEdge\IAddEdgeBehavior.cs" />
+    <Compile Include="Behaviors\AddEdge\IAddEdgeBehaviorState.cs" />
     <Compile Include="Behaviors\CommandClickBehavior.cs" />
     <Compile Include="Behaviors\PointMoveBehavior.cs" />
+    <Compile Include="Behaviors\AddEdge\SecondPointAddEdgeBehaviorState.cs" />
     <Compile Include="Behaviors\SwitchBehavior.cs" />
     <Compile Include="Extensions\UIElementExtensions.cs" />
     <Compile Include="Messages\FigureSelectionMessage.cs" />
@@ -81,12 +87,18 @@
     <Compile Include="Resources\Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Resources\FiguresTemplateSelector.cs" />
     <Compile Include="ViewModel\AnimationViewModel.cs" />
+    <Compile Include="ViewModel\EdgeViewModel.cs" />
     <Compile Include="ViewModel\EditMode.cs" />
+    <Compile Include="ViewModel\FigureViewModel.cs" />
+    <Compile Include="ViewModel\FigureViewModelFactory.cs" />
     <Compile Include="ViewModel\FrameViewModel.cs" />
+    <Compile Include="ViewModel\FrameViewModelFactory.cs" />
     <Compile Include="ViewModel\IAnimationViewModel.cs" />
     <Compile Include="ViewModel\IEdgeViewModel.cs" />
     <Compile Include="ViewModel\IFigureViewModel.cs" />
+    <Compile Include="ViewModel\IFigureViewModelFactory.cs" />
     <Compile Include="ViewModel\IFrameViewModel.cs" />
+    <Compile Include="ViewModel\IFrameViewModelFactory.cs" />
     <Compile Include="ViewModel\IPointViewModel.cs" />
     <Compile Include="ViewModel\PointViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />

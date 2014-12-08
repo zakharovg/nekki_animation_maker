@@ -6,6 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:behaviors="clr-namespace:AnimationMaker.Behaviors"
+        xmlns:addEdge="clr-namespace:AnimationMaker.Behaviors.AddEdge"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" MinHeight="1024" MinWidth="768" >
 	<Window.InputBindings>
@@ -52,7 +53,7 @@
 					<TextBlock FontSize="14" TextWrapping="Wrap">Add edge</TextBlock>
 				</ToggleButton>
 
-				<TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding CurrentFrameIndex}" 
+				<TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding CurrentFrameText}" 
 					   FontSize="18"
 					   VerticalAlignment="Center"
 					   TextAlignment="Right"
@@ -65,14 +66,38 @@
 				 ItemTemplateSelector="{StaticResource FiguresTemplateSelector}" >
 			<ItemsControl.ItemsPanel>
 				<ItemsPanelTemplate>
-					<Canvas Background="LightGray" Focusable="True">
+					<Canvas Background="LightGray" Focusable="True" ClipToBounds="True">
 						<i:Interaction.Behaviors>
 							<behaviors:CommandClickBehavior Command="{Binding CurrentFrame.AddPoint}" 
 															IsEnabled="{Binding CurrentFrame.Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}" />
+							<addEdge:AddEdgeBehavior IsEnabled="{Binding CurrentFrame.Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddEdge}}"
+													   AddPointCommand="{Binding CurrentFrame.AddPoint}"
+													   AddEdgeCommand="{Binding CurrentFrame.AddEdge}" />
 						</i:Interaction.Behaviors>
 					</Canvas>
 				</ItemsPanelTemplate>
 			</ItemsControl.ItemsPanel>
 		</ItemsControl>
+
+		<Grid Grid.Row="2" Grid.Column="1">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="15*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="15*" />
+				<ColumnDefinition Width="100*" />
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+				<RowDefinition Height="2*" />
+				<RowDefinition Height="7*" />
+				<RowDefinition Height="2*" />
+			</Grid.RowDefinitions>
+
+			<Button Grid.Row="1" Grid.Column="0" IsEnabled="{Binding CanNavigateLeft}" Command="{Binding PreviousFrame}">
+				<TextBlock Text="Previous frame" TextWrapping="Wrap" FontSize="14" TextAlignment="Center"/>
+			</Button>
+			<Button Grid.Row="1" Grid.Column="2" Command="{Binding NextFrame}">
+				<TextBlock Text="Next frame" TextWrapping="Wrap" FontSize="14" TextAlignment="Center"/>
+			</Button>
+		</Grid>
 	</Grid>
 </controls:MetroWindow>

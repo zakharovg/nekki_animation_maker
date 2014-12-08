@@ -32,6 +32,8 @@ namespace AnimationMaker.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
 			SimpleIoc.Default.Register<IMessenger, Messenger>();
+			SimpleIoc.Default.Register<IFrameViewModelFactory, FrameViewModelFactory>();
+			SimpleIoc.Default.Register<IFigureViewModelFactory, FigureViewModelFactory>();
 	        SimpleIoc.Default.Register<IAnimationViewModel, AnimationViewModel>();
         }
 

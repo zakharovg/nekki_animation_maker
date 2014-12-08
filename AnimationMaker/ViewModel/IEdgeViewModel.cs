@@ -1,4 +1,5 @@
-﻿using AnimationMaker.Model;
+﻿using System.Collections.Generic;
+using AnimationMaker.Model;
 
 namespace AnimationMaker.ViewModel
 {
@@ -6,6 +7,8 @@ namespace AnimationMaker.ViewModel
 	{
 		IPointViewModel Start { get; }
 		IPointViewModel End { get; }
-		Edge Edge { get; set; }
+		IEnumerable<IPointViewModel> Points { get; }
+
+		Edge GetEdge();
 	}
 }

@@ -1,27 +1,26 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Interactivity;
 using System.Windows.Media;
 using AnimationMaker.ViewModel;
 using MahApps.Metro.Controls;
 
 namespace AnimationMaker.Behaviors
 {
-	public sealed class PointMoveBehavior : SwitchBehavior<FrameworkElement>
+	public sealed class PointMoveBehavior : SwitchBehavior<System.Windows.Shapes.Path>
 	{
 		private Point _currentPosition;
 		private Point _mouseStartPosition;
-		private readonly TranslateTransform _transform = new TranslateTransform();
 		private Canvas _canvas;
+		private EllipseGeometry _ellipseGeometry;
 
 		protected override void OnAttached()
 		{
 			base.OnAttached();
 
-			AssociatedObject.RenderTransform = _transform;
-
 			_canvas = AssociatedObject.TryFindParent<Canvas>();
+			_ellipseGeometry = AssociatedObject.Data as EllipseGeometry;
 
 			AssociatedObject.MouseLeftButtonDown += Capture;
 			AssociatedObject.MouseMove += Move;
@@ -40,23 +39,48 @@ namespace AnimationMaker.Behaviors
 		private void Move(object sender, MouseEventArgs args)
 		{
 			var diff = args.GetPosition(_canvas) - _mouseStartPosition;
-			if (!AssociatedObject.IsMouseCaptured)
+			if (!AssociatedObject.IsMouseCaptured || Mouse.LeftButton != MouseButtonState.Pressed)
 				return;
-			if (Mouse.LeftButton != MouseButtonState.Pressed)
-				return;
-
-			_transform.X = _currentPosition.X + diff.X;
-			_transform.Y = _currentPosition.Y + diff.Y;
 
 			var point = (IPointViewModel)AssociatedObject.DataContext;
-			point.SetCoordinates(_transform.X, _transform.Y);
+
+			_currentPosition.X = CalculateX(diff);
+			_currentPosition.Y = CalculateY(diff);
+
+			point.CenterPoint = new Point(_currentPosition.X, _currentPosition.Y);
+		}
+
+		private double CalculateX(Vector diff)
+		{
+			var x = _mouseStartPosition.X + diff.X;
+
+			if (x <= _ellipseGeometry.RadiusX)
+				return _ellipseGeometry.RadiusX;
+
+			var maxX = _canvas.ActualWidth - _ellipseGeometry.RadiusX;
+			if (x > maxX)
+				return maxX;
+
+			return x;
+		}
+
+		private double CalculateY(Vector diff)
+		{
+			var y = _mouseStartPosition.Y + diff.Y;
+
+			if (y <= _ellipseGeometry.RadiusY)
+				return _ellipseGeometry.RadiusY;
+
+			var maxY = _canvas.ActualHeight - _ellipseGeometry.RadiusY;
+			if (y > maxY)
+				return maxY;
+
+			return y;
 		}
 
 		private void Release(object sender, MouseButtonEventArgs mouseButtonEventArgs)
 		{
 			AssociatedObject.ReleaseMouseCapture();
-			_currentPosition.X = _transform.X;
-			_currentPosition.Y = _transform.Y;
 		}
 
 		protected override void OnDetaching()
