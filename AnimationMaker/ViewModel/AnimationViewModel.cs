@@ -1,7 +1,9 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using AnimationMaker.Model;
+using AnimationMaker.Services;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Messaging;
@@ -11,7 +13,9 @@ namespace AnimationMaker.ViewModel
 	public sealed class AnimationViewModel : ViewModelBase, IAnimationViewModel
 	{
 		private readonly IFrameViewModelFactory _frameFactory;
-		private readonly Animation _animation;
+		private readonly IUserDialogService _userDialogService;
+		private readonly IAnimationSerializer _animationSerializer;
+		private Animation _animation;
 
 		private EditMode _mode;
 
@@ -22,12 +26,20 @@ namespace AnimationMaker.ViewModel
 
 		private IFrameViewModel _currentFrame;
 
-		public AnimationViewModel(IMessenger messenger, IFrameViewModelFactory frameFactory)
+		public AnimationViewModel(
+			IMessenger messenger, 
+			IFrameViewModelFactory frameFactory, 
+			IUserDialogService userDialogService,
+			IAnimationSerializer animationSerializer)
 			: base(messenger)
 		{
 			if (frameFactory == null) throw new ArgumentNullException("frameFactory");
+			if (userDialogService == null) throw new ArgumentNullException("userDialogService");
+			if (animationSerializer == null) throw new ArgumentNullException("animationSerializer");
 
 			_frameFactory = frameFactory;
+			_userDialogService = userDialogService;
+			_animationSerializer = animationSerializer;
 			_animation = new Animation();
 			CurrentFrameIndex = 0;
 
@@ -60,8 +72,49 @@ namespace AnimationMaker.ViewModel
 				var previousFrame = _animation[--CurrentFrameIndex];
 				CurrentFrame = _frameFactory.Create(previousFrame);
 			}, () => CanNavigateLeft);
-			_save = new RelayCommand(() => { });
-			_load = new RelayCommand(() => { });
+			_save = new RelayCommand(async () =>
+			{
+				SaveCurrentFrame();
+				var result = _userDialogService.GetSavePath();
+				if (!result.IsSuccessful)
+					return;
+
+				Exception ex = null;
+				try
+				{
+					using (var file = File.OpenWrite(result.Filename))
+						_animationSerializer.Write(_animation, file);
+				}
+				catch (Exception exception)
+				{
+					ex = exception;
+				}
+
+				if (ex != null)
+					await _userDialogService.Alert(ex.Message);
+			});
+			_load = new RelayCommand(async () =>
+			{
+				var result = _userDialogService.GetLoadPath();
+				if (!result.IsSuccessful)
+					return;
+
+				Exception ex = null;
+				try
+				{
+					using (var file = File.OpenRead(result.Filename))
+						_animation = _animationSerializer.Read(file);
+
+					RaisePropertyChanged("CurrentFrame");
+				}
+				catch (Exception exception)
+				{
+					ex = exception;
+				}
+
+				if (ex != null)
+					await _userDialogService.Alert(ex.Message);
+			});
 		}
 
 		private void SaveCurrentFrame()

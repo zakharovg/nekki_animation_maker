@@ -83,9 +83,14 @@
     <Compile Include="Behaviors\SwitchBehavior.cs" />
     <Compile Include="Extensions\UIElementExtensions.cs" />
     <Compile Include="Messages\FigureSelectionMessage.cs" />
+    <Compile Include="Model\AnimationSerializer.cs" />
+    <Compile Include="Model\IAnimationSerializer.cs" />
     <Compile Include="Resources\Converters\MouseLeftButtonUpToPointConverter.cs" />
     <Compile Include="Resources\Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Resources\FiguresTemplateSelector.cs" />
+    <Compile Include="Services\OpenDialogResult.cs" />
+    <Compile Include="Services\IUserDialogService.cs" />
+    <Compile Include="Services\UserDialogService.cs" />
     <Compile Include="ViewModel\AnimationViewModel.cs" />
     <Compile Include="ViewModel\EdgeViewModel.cs" />
     <Compile Include="ViewModel\EditMode.cs" />

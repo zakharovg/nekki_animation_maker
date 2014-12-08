@@ -12,6 +12,8 @@
   See http://www.galasoft.ch/mvvm
 */
 
+using AnimationMaker.Model;
+using AnimationMaker.Services;
 using GalaSoft.MvvmLight.Ioc;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.ServiceLocation;
@@ -32,8 +34,10 @@ namespace AnimationMaker.ViewModel
             ServiceLocator.SetLocatorProvider(() => SimpleIoc.Default);
 
 			SimpleIoc.Default.Register<IMessenger, Messenger>();
-			SimpleIoc.Default.Register<IFrameViewModelFactory, FrameViewModelFactory>();
-			SimpleIoc.Default.Register<IFigureViewModelFactory, FigureViewModelFactory>();
+	        SimpleIoc.Default.Register<IAnimationSerializer, AnimationSerializer>();
+	        SimpleIoc.Default.Register<IUserDialogService, UserDialogService>();
+	        SimpleIoc.Default.Register<IFrameViewModelFactory, FrameViewModelFactory>();
+	        SimpleIoc.Default.Register<IFigureViewModelFactory, FigureViewModelFactory>();
 	        SimpleIoc.Default.Register<IAnimationViewModel, AnimationViewModel>();
         }
 
