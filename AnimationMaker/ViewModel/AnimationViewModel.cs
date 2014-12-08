@@ -13,6 +13,8 @@ namespace AnimationMaker.ViewModel
 		private readonly IFrameViewModelFactory _frameFactory;
 		private readonly Animation _animation;
 
+		private EditMode _mode;
+
 		private ICommand _nextFrame;
 		private ICommand _previousFrame;
 		private ICommand _save;
@@ -77,6 +79,12 @@ namespace AnimationMaker.ViewModel
 				RaisePropertyChanged("StatusText");
 				RaisePropertyChanged("CanNavigateLeft");
 			}
+		}
+
+		public EditMode Mode
+		{
+			get { return _mode; }
+			set { Set(ref _mode, value); }
 		}
 
 		public ICommand NextFrame

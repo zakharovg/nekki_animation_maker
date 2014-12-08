@@ -36,12 +36,6 @@ namespace AnimationMaker.ViewModel
 			MessengerInstance.Register<FigureSelectionMessage>(this, _token, HandleItemSelection);
 		}
 
-		public EditMode Mode
-		{
-			get { return _mode; }
-			set { Set(ref _mode, value); }
-		}
-
 		public ObservableCollection<IFigureViewModel> Figures
 		{
 			get { return _figures; }

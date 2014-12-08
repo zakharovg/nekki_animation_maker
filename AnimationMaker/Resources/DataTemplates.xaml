@@ -17,13 +17,13 @@
 			<i:Interaction.Behaviors>
 				<behaviors:PointMoveBehavior IsEnabled="{Binding 
 						RelativeSource={RelativeSource AncestorType={x:Type Window}}, 
-						Path=DataContext.CurrentFrame.Mode,
+						Path=DataContext.Mode,
 						Converter={StaticResource EnumToBooleanConverter}, 
 						ConverterParameter={x:Static viewModel:EditMode.Select}}"/>
 				<behaviors:CommandClickBehavior Command="{Binding TriggerSelection}"
 												IsEnabled="{Binding 
 						RelativeSource={RelativeSource AncestorType={x:Type Window}}, 
-						Path=DataContext.CurrentFrame.Mode,
+						Path=DataContext.Mode,
 						Converter={StaticResource EnumToBooleanConverter}, 
 						ConverterParameter={x:Static viewModel:EditMode.Select}}"/>
 			</i:Interaction.Behaviors>
@@ -54,7 +54,7 @@
 				<behaviors:CommandClickBehavior Command="{Binding TriggerSelection}"
 												IsEnabled="{Binding 
 						RelativeSource={RelativeSource AncestorType={x:Type Window}}, 
-						Path=DataContext.CurrentFrame.Mode,
+						Path=DataContext.Mode,
 						Converter={StaticResource EnumToBooleanConverter}, 
 						ConverterParameter={x:Static viewModel:EditMode.Select}}"/>
 			</i:Interaction.Behaviors>

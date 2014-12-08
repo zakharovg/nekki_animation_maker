@@ -4,6 +4,8 @@ namespace AnimationMaker.ViewModel
 {
 	public interface IAnimationViewModel
 	{
+		EditMode Mode { get; set; }
+
 		IFrameViewModel CurrentFrame { get; }
 
 		ICommand NextFrame { get; }
@@ -11,6 +13,7 @@ namespace AnimationMaker.ViewModel
 
 		ICommand Save { get; }
 		ICommand Load { get; }
+
 		string StatusText { get; }
 		bool CanNavigateLeft { get; }
 	}

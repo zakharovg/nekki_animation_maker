@@ -8,8 +8,6 @@ namespace AnimationMaker.ViewModel
 	{
 		ObservableCollection<IFigureViewModel> Figures { get; }
 
-		EditMode Mode { get; set; }
-
 		ICommand RemoveSelected { get; }
 		ICommand AddPoint { get; }
 		ICommand AddEdge { get; }

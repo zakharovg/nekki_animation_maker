@@ -14,6 +14,8 @@
 		<KeyBinding Key="Left" Command="{Binding PreviousFrame}"/>
 		<KeyBinding Key="D" Command="{Binding NextFrame}"/>
 		<KeyBinding Key="Right" Command="{Binding NextFrame}"/>
+		<KeyBinding Key="S" Modifiers="Control" Command="{Binding Save}"/>
+		<KeyBinding Key="O" Modifiers="Control" Command="{Binding Load}"/>
 	</Window.InputBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -44,15 +46,15 @@
 				</Grid.RowDefinitions>
 
 				<ToggleButton Grid.Column="0" Grid.Row="1"
-			              IsChecked="{Binding Path=CurrentFrame.Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.Select}}">
+			              IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.Select}}">
 					<TextBlock FontSize="14" TextWrapping="Wrap">Select</TextBlock>
 				</ToggleButton>
 				<ToggleButton Grid.Column="2" Grid.Row="1"
-			              IsChecked="{Binding Path=CurrentFrame.Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}">
+			              IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}">
 					<TextBlock FontSize="14" TextWrapping="Wrap">Add point</TextBlock>
 				</ToggleButton>
 				<ToggleButton Grid.Column="4" Grid.Row="1"
-			              IsChecked="{Binding Path=CurrentFrame.Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddEdge}}">
+			              IsChecked="{Binding Path=Mode,Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddEdge}}">
 					<TextBlock FontSize="14" TextWrapping="Wrap">Add edge</TextBlock>
 				</ToggleButton>
 
@@ -72,8 +74,8 @@
 					<Canvas Background="LightGray" Focusable="True" ClipToBounds="True">
 						<i:Interaction.Behaviors>
 							<behaviors:CommandClickBehavior Command="{Binding CurrentFrame.AddPoint}" 
-															IsEnabled="{Binding CurrentFrame.Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}" />
-							<addEdge:AddEdgeBehavior IsEnabled="{Binding CurrentFrame.Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddEdge}}"
+															IsEnabled="{Binding Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddPoint}}" />
+							<addEdge:AddEdgeBehavior IsEnabled="{Binding Mode, Converter={StaticResource EnumToBooleanConverter}, ConverterParameter={x:Static viewModel:EditMode.AddEdge}}"
 													   AddPointCommand="{Binding CurrentFrame.AddPoint}"
 													   AddEdgeCommand="{Binding CurrentFrame.AddEdge}" />
 						</i:Interaction.Behaviors>
@@ -87,7 +89,10 @@
 				<ColumnDefinition Width="15*" />
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="15*" />
-				<ColumnDefinition Width="100*" />
+				<ColumnDefinition Width="85*" />
+				<ColumnDefinition Width="15*" />
+				<ColumnDefinition Width="*" />
+				<ColumnDefinition Width="15*" />
 			</Grid.ColumnDefinitions>
 			<Grid.RowDefinitions>
 				<RowDefinition Height="2*" />
@@ -96,10 +101,28 @@
 			</Grid.RowDefinitions>
 
 			<Button Grid.Row="1" Grid.Column="0" IsEnabled="{Binding CanNavigateLeft}" Command="{Binding PreviousFrame}">
+				<Button.ToolTip>
+					<TextBlock Text="Hotkey: A, Left arrow"/>
+				</Button.ToolTip>
 				<TextBlock Text="Previous frame" TextWrapping="Wrap" FontSize="14" TextAlignment="Center"/>
 			</Button>
 			<Button Grid.Row="1" Grid.Column="2" Command="{Binding NextFrame}">
+				<Button.ToolTip>
+					<TextBlock Text="Hotkey: D, Right arrow"/>
+				</Button.ToolTip>
 				<TextBlock Text="Next frame" TextWrapping="Wrap" FontSize="14" TextAlignment="Center"/>
+			</Button>
+			<Button Grid.Row="1" Grid.Column="4" Command="{Binding Save}">
+				<Button.ToolTip>
+					<TextBlock Text="Hotkey: Ctrl + S"/>
+				</Button.ToolTip>
+				<TextBlock Text="Save" TextWrapping="Wrap" FontSize="14" TextAlignment="Center"/>
+			</Button>
+			<Button Grid.Row="1" Grid.Column="6" Command="{Binding Load}">
+				<Button.ToolTip>
+					<TextBlock Text="Hotkey: Ctrl + O"/>
+				</Button.ToolTip>
+				<TextBlock Text="Load" TextWrapping="Wrap" FontSize="14" TextAlignment="Center"/>
 			</Button>
 		</Grid>
 	</Grid>
