@@ -11,18 +11,25 @@ namespace AnimationMaker.Services
 	{
 		private const string DefaultExtension = ".nam";
 		private const string DialogFilter = "Nekki animation (.nam)|*.nam";
+		private const string DefaultAnimationName = "newAnimation" + DefaultExtension;
+
+		private string _lastSaveFileName = string.Empty;
 
 		public OpenDialogResult GetSavePath()
 		{
 			var dialog = new SaveFileDialog
 			{
-				DefaultExt = DefaultExtension, 
-				Filter = DialogFilter
+				DefaultExt = DefaultExtension,
+				Filter = DialogFilter,
+				FileName = string.IsNullOrEmpty(_lastSaveFileName) ? DefaultAnimationName : _lastSaveFileName,
+				CheckFileExists = false,
+				OverwritePrompt = false,
+				RestoreDirectory = true
 			};
 
 			var dialogResult = dialog.ShowDialog();
 
-
+			_lastSaveFileName = dialog.FileName;
 			return new OpenDialogResult(dialogResult.Value, dialog.FileName);
 		}
 
@@ -31,10 +38,13 @@ namespace AnimationMaker.Services
 			var dialog = new OpenFileDialog
 			{
 				DefaultExt = DefaultExtension,
-				Filter = DialogFilter
+				Filter = DialogFilter,
+				FileName = _lastSaveFileName,
+				RestoreDirectory = true
 			};
 
 			var dialogResult = dialog.ShowDialog();
+			_lastSaveFileName = dialog.FileName;
 			return new OpenDialogResult(dialogResult.Value, dialog.FileName);
 		}
 
