@@ -14,6 +14,8 @@ namespace AnimationMaker.ViewModel
 		ICommand Save { get; }
 		ICommand Load { get; }
 
+		ICommand Clear { get; }
+
 		string StatusText { get; }
 		bool CanNavigateLeft { get; }
 	}

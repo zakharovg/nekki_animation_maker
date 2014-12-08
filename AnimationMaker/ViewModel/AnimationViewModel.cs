@@ -24,6 +24,7 @@ namespace AnimationMaker.ViewModel
 		private ICommand _previousFrame;
 		private ICommand _save;
 		private ICommand _load;
+		private ICommand _clear;
 
 		private IFrameViewModel _currentFrame;
 
@@ -41,13 +42,24 @@ namespace AnimationMaker.ViewModel
 			_frameFactory = frameFactory;
 			_userDialogService = userDialogService;
 			_animationSerializer = animationSerializer;
-			_animation = new Animation();
-			CurrentFrameIndex = 0;
+			Reset();
 
 			SetupCommands();
 
 			var initialFrame = _animation[CurrentFrameIndex];
 			_currentFrame = _frameFactory.Create(initialFrame);
+		}
+
+		private void Reset()
+		{
+			_animation = new Animation();
+			GoToFirstFrame();
+		}
+
+		private void GoToFirstFrame()
+		{
+			CurrentFrameIndex = 0;
+			CurrentFrame = _frameFactory.Create(_animation.Frames.First());
 		}
 
 		private void SetupCommands()
@@ -106,8 +118,7 @@ namespace AnimationMaker.ViewModel
 					using (var file = File.OpenRead(result.Filename))
 						_animation = _animationSerializer.Read(file);
 
-					CurrentFrame = _frameFactory.Create(_animation.Frames.First());
-					CurrentFrameIndex = 0;
+					GoToFirstFrame();
 				}
 				catch (Exception exception)
 				{
@@ -117,6 +128,7 @@ namespace AnimationMaker.ViewModel
 				if (ex != null)
 					await _userDialogService.Alert(ex.Message);
 			});
+			_clear = new RelayCommand(Reset);
 		}
 
 		private void SaveCurrentFrame()
@@ -160,6 +172,11 @@ namespace AnimationMaker.ViewModel
 		public ICommand Load
 		{
 			get { return _load; }
+		}
+
+		public ICommand Clear
+		{
+			get { return _clear; }
 		}
 
 		public string StatusText

@@ -16,6 +16,7 @@
 		<KeyBinding Key="Right" Command="{Binding NextFrame}"/>
 		<KeyBinding Key="S" Modifiers="Control" Command="{Binding Save}"/>
 		<KeyBinding Key="O" Modifiers="Control" Command="{Binding Load}"/>
+		<KeyBinding Key="R" Modifiers="Control" Command="{Binding Clear}"/>
 	</Window.InputBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -89,7 +90,9 @@
 				<ColumnDefinition Width="15*" />
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="15*" />
-				<ColumnDefinition Width="85*" />
+				<ColumnDefinition Width="70*" />
+				<ColumnDefinition Width="15*" />
+				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="15*" />
 				<ColumnDefinition Width="*" />
 				<ColumnDefinition Width="15*" />
@@ -123,6 +126,12 @@
 					<TextBlock Text="Hotkey: Ctrl + O"/>
 				</Button.ToolTip>
 				<TextBlock Text="Load" TextWrapping="Wrap" FontSize="14" TextAlignment="Center"/>
+			</Button>
+			<Button Grid.Row="1" Grid.Column="8" Command="{Binding Clear}">
+				<Button.ToolTip>
+					<TextBlock Text="Hotkey: Ctrl + R"/>
+				</Button.ToolTip>
+				<TextBlock Text="Clear All" TextWrapping="Wrap" FontSize="14" TextAlignment="Center"/>
 			</Button>
 		</Grid>
 	</Grid>
