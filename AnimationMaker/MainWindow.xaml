@@ -4,13 +4,16 @@
         xmlns:viewModel="clr-namespace:AnimationMaker.ViewModel"
         xmlns:controls="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:command="http://www.galasoft.ch/mvvmlight"
         xmlns:behaviors="clr-namespace:AnimationMaker.Behaviors"
         xmlns:addEdge="clr-namespace:AnimationMaker.Behaviors.AddEdge"
         DataContext="{Binding Main, Source={StaticResource Locator}}"
         Title="MainWindow" MinHeight="1024" MinWidth="768" >
 	<Window.InputBindings>
 		<KeyBinding Key="Delete" Command="{Binding CurrentFrame.RemoveSelected}"/>
+		<KeyBinding Key="A" Command="{Binding PreviousFrame}" />
+		<KeyBinding Key="Left" Command="{Binding PreviousFrame}"/>
+		<KeyBinding Key="D" Command="{Binding NextFrame}"/>
+		<KeyBinding Key="Right" Command="{Binding NextFrame}"/>
 	</Window.InputBindings>
 	<Grid>
 		<Grid.RowDefinitions>
@@ -53,7 +56,7 @@
 					<TextBlock FontSize="14" TextWrapping="Wrap">Add edge</TextBlock>
 				</ToggleButton>
 
-				<TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding CurrentFrameText}" 
+				<TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding StatusText}" 
 					   FontSize="18"
 					   VerticalAlignment="Center"
 					   TextAlignment="Right"

@@ -18,7 +18,6 @@ namespace AnimationMaker.ViewModel
 		private ICommand _save;
 		private ICommand _load;
 
-		private int _currentFrameIndex;
 		private IFrameViewModel _currentFrame;
 
 		public AnimationViewModel(IMessenger messenger, IFrameViewModelFactory frameFactory)
@@ -58,7 +57,7 @@ namespace AnimationMaker.ViewModel
 
 				var previousFrame = _animation[--CurrentFrameIndex];
 				CurrentFrame = _frameFactory.Create(previousFrame);
-			});
+			}, () => CanNavigateLeft);
 			_save = new RelayCommand(() => { });
 			_load = new RelayCommand(() => { });
 		}
@@ -72,7 +71,12 @@ namespace AnimationMaker.ViewModel
 		public IFrameViewModel CurrentFrame
 		{
 			get { return _currentFrame; }
-			private set { Set(ref _currentFrame, value); }
+			private set
+			{
+				Set(ref _currentFrame, value);
+				RaisePropertyChanged("StatusText");
+				RaisePropertyChanged("CanNavigateLeft");
+			}
 		}
 
 		public ICommand NextFrame
@@ -95,9 +99,9 @@ namespace AnimationMaker.ViewModel
 			get { return _load; }
 		}
 
-		public string CurrentFrameText
+		public string StatusText
 		{
-			get { return string.Format("Frame #{0}", CurrentFrameIndex); }
+			get { return string.Format("Frame #{0}, Total frames:{1}", CurrentFrameIndex + 1, _animation.Frames.Count()); }
 		}
 
 		public bool CanNavigateLeft
@@ -105,15 +109,6 @@ namespace AnimationMaker.ViewModel
 			get { return CurrentFrameIndex > 0; }
 		}
 
-		private int CurrentFrameIndex
-		{
-			get { return _currentFrameIndex; }
-			set
-			{
-				_currentFrameIndex = value;
-				RaisePropertyChanged("CurrentFrameText");
-				RaisePropertyChanged("CanNavigateLeft");
-			}
-		}
+		private int CurrentFrameIndex { get; set; }
 	}
 }
